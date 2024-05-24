@@ -2,11 +2,12 @@ import express from "express";
 import bcrypt from "bcrypt";
 import _ from "lodash";
 
-import { User } from "../models/user.js";
+import { User, validateUser } from "../models/user.js";
+import validator from "../middlewares/validate.js";
 
 const router = express.Router();
 
-router.post("/", validator(validate), async (req, res) => {
+router.post("/", validator(validateUser), async (req, res) => {
   const { email, name, password } = req.body;
   let user = await service.findOne({ email });
 
