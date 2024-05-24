@@ -9,7 +9,7 @@
     "start": "node index.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Ann Moraa",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.1",
