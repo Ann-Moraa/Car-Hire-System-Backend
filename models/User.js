@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import Joi from "joi";
 
 const schema = new mongoose.Schema({
   email: {
