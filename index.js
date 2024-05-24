@@ -3,6 +3,7 @@ import express from "express";
 
 import db from "./startup/db";
 import logging from "./startup/logging";
+import prod from "./startup/prod";
 import routes from "./startup/routes";
 
 const app = express();
@@ -10,6 +11,7 @@ const app = express();
 db();
 logging();
 routes(app);
+prod(app);
 
 const port = process.env.PORT || 3000;
 const server = app.listen(port, () =>
