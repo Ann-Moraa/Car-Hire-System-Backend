@@ -1,12 +1,14 @@
 import winston from "winston";
 import express from "express";
 
-import routes from "./startup/routes";
 import db from "./startup/db";
+import logging from "./startup/logging";
+import routes from "./startup/routes";
 
 const app = express();
 
 db();
+logging();
 routes(app);
 
 const port = process.env.PORT || 3000;
