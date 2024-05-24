@@ -1,9 +1,9 @@
-const winston = require("winston");
+import winston from "winston";
 
-module.exports = function (err, _req, res) {
+export default function (err, _req, res) {
   winston.error(err.message);
 
   if (typeof res.status !== "function") return;
 
   res?.status(500)?.send({ error: "Something failed!" });
-};
+}

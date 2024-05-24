@@ -2,7 +2,7 @@ import express from "express";
 import bcrypt from "bcrypt";
 import _ from "lodash";
 
-import { User } from "../models/user";
+import { User } from "../models/user.js";
 
 const router = express.Router();
 

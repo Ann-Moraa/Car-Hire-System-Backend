@@ -1,11 +1,11 @@
 import winston from "winston";
 import express from "express";
 
-import config from "./startup/config";
-import db from "./startup/db";
-import logging from "./startup/logging";
-import prod from "./startup/prod";
-import routes from "./startup/routes";
+import config from "./startup/config.js";
+import db from "./startup/db.js";
+import logging from "./startup/logging.js";
+import prod from "./startup/prod.js";
+import routes from "./startup/routes.js";
 
 const app = express();
 
