@@ -23,4 +23,10 @@ router.post("/", validator(validate), async (req, res) => {
     .send(_.pick(user, ["_id", "name", "email"]));
 });
 
+router.get("/", async (_req, res) => {
+  const users = await User.find({});
+
+  res.send(users);
+});
+
 export default router;
