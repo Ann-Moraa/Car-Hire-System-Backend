@@ -2,8 +2,8 @@ import express from "express";
 import bcrypt from "bcrypt";
 import _ from "lodash";
 
-import { User, validateUser } from "../models/user";
-import validator from "../middlewares/validate";
+import { User, validateUser } from "../models/user.js";
+import validator from "../middlewares/validate.js";
 
 const router = express.Router();
 

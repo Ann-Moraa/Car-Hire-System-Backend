@@ -1,8 +1,8 @@
 import express from "express";
 
-import { Car, validateCar } from "../models/car";
-import auth from "../middlewares/auth";
-import validator from "../middlewares/validate";
+import { Car, validateCar } from "../models/car.js";
+import auth from "../middlewares/auth.js";
+import validator from "../middlewares/validate.js";
 
 const router = express.Router();
 
