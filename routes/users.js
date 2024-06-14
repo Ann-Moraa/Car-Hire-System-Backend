@@ -3,8 +3,8 @@ const bcrypt = require("bcrypt");
 const router = express.Router();
 const _ = require("lodash");
 
-const { User, validateUser } = require("../models/user.js");
-const validator = require("../middlewares/validate.js");
+const { User, validateUser } = require("../models/user");
+const validator = require("../middlewares/validate");
 
 router.post("/", validator(validateUser), async (req, res) => {
   const { email, name, password } = req.body;

@@ -1,7 +1,5 @@
-const winston = require("winston");
-
 module.exports = function (err, _req, res) {
-  winston.error(err.message);
+  if (err?.message) console.error(err.message);
 
   if (typeof res.status !== "function") return;
 
