@@ -3,9 +3,9 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 
-const { User } = require("../models/user");
-const auth = require("../middlewares/auth");
-const validator = require("../middlewares/validate");
+const { User } = require("../models/user.js");
+const auth = require("../middlewares/auth.js");
+const validator = require("../middlewares/validate.js");
 
 router.post("/", validator(validate), async (req, res) => {
   const user = await User.findOne({ email: req.body.email });

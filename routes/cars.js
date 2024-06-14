@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
 
-const { Car, validateCar } = require("../models/car");
-const auth = require("../middlewares/auth");
-const validator = require("../middlewares/validate");
+const { Car, validateCar } = require("../models/car.js");
+const auth = require("../middlewares/auth.js");
+const validator = require("../middlewares/validate.js");
 
 router.post("/", [auth, validator(validateCar)], async (req, res) => {
   const { fuel, mileage, model, plate, selfDrive, type, year, images } =

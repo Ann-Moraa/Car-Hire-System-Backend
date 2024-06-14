@@ -2,10 +2,10 @@ const cors = require("cors");
 const express = require("express");
 const serveStatic = require("serve-static");
 
-const auth = require("../routes/auth");
-const cars = require("../routes/cars");
-const error = require("../middlewares/error");
-const users = require("../routes/users");
+const auth = require("../routes/auth.js");
+const cars = require("../routes/cars.js");
+const error = require("../middlewares/error.js");
+const users = require("../routes/users.js");
 
 module.exports = function (app) {
   app.use(express.json());
