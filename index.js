@@ -3,13 +3,15 @@ const express = require("express");
 const app = express();
 
 const logging = require("./startup/logging");
-// require("./startup/routes")(app);
+const routes = require("./startup/routes");
 // require("./startup/db")();
 // require("./startup/config")();
 // require("./startup/prod")(app);
 
-console.log("Working");
+console.log("Init startup...");
 logging();
+routes(app);
+console.log("Done initializing startup...");
 
 const port = process.env.PORT || 3000;
 const server = app.listen(port, () =>
