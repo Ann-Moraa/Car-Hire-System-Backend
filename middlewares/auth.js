@@ -1,6 +1,6 @@
-import jwt from "jsonwebtoken";
+const jwt = require("jsonwebtoken");
 
-export default function (req, res, next) {
+module.exports = (req, res, next) => {
   const token = req.header("x-auth-token");
   if (!token)
     return res
@@ -14,4 +14,4 @@ export default function (req, res, next) {
   } catch (err) {
     res.status(400).send({ error: "Invalid token. User doesn't exist." });
   }
-}
+};

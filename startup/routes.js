@@ -1,13 +1,13 @@
-import cors from "cors";
-import express from "express";
-import serveStatic from "serve-static";
+const cors = require("cors");
+const express = require("express");
+const serveStatic = require("serve-static");
 
-import auth from "../routes/auth.js";
-import cars from "../routes/cars.js";
-import error from "../middlewares/error.js";
-import users from "../routes/users.js";
+const auth = require("../routes/auth");
+const cars = require("../routes/cars");
+const error = require("../middlewares/error");
+const users = require("../routes/users");
 
-export default function (app) {
+module.exports = function (app) {
   app.use(express.json());
   app.use(serveStatic("public", { acceptRanges: false }));
   app.use(cors({ origin: "*" }));
@@ -15,4 +15,4 @@ export default function (app) {
   app.use("/api/cars", cars);
   app.use("/api/users", users);
   app.use(error);
-}
+};

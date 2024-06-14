@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
-import Joi from "joi";
+const Joi = require("joi");
+const mongoose = require("mongoose");
 
 const schema = new mongoose.Schema({
   selfDrive: {
@@ -45,9 +45,9 @@ const schema = new mongoose.Schema({
   images: [String],
 });
 
-export const Car = mongoose.model("Car", schema);
+const Car = mongoose.model("Car", schema);
 
-export const validateCar = (car) =>
+const validateCar = (car) =>
   Joi.object({
     selfDrive: Joi.boolean().required(),
     fuel: Joi.string().required(),
@@ -59,3 +59,6 @@ export const validateCar = (car) =>
     year: Joi.number().required(),
     images: Joi.array().min(1),
   }).validate(car);
+
+exports.Car = Car;
+exports.validateCar = validateCar;

@@ -1,12 +1,11 @@
-import Joi from "joi";
-import bcrypt from "bcrypt";
-import express from "express";
-
-import { User } from "../models/user";
-import auth from "../middlewares/auth.js";
-import validator from "../middlewares/validate.js";
-
+const Joi = require("joi");
+const express = require("express");
 const router = express.Router();
+const bcrypt = require("bcrypt");
+
+const { User } = require("../models/user");
+const auth = require("../middlewares/auth");
+const validator = require("../middlewares/validate");
 
 router.post("/", validator(validate), async (req, res) => {
   const user = await User.findOne({ email: req.body.email });
@@ -39,4 +38,4 @@ function validate(req) {
   }).validate(req);
 }
 
-export default router;
+module.exports = router;

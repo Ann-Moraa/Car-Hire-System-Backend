@@ -1,11 +1,10 @@
-import express from "express";
-import bcrypt from "bcrypt";
-import _ from "lodash";
-
-import { User, validateUser } from "../models/user.js";
-import validator from "../middlewares/validate.js";
-
+const express = require("express");
+const bcrypt = require("bcrypt");
 const router = express.Router();
+const _ = require("lodash");
+
+const { User, validateUser } = require("../models/user");
+const validator = require("../middlewares/validate");
 
 router.post("/", validator(validateUser), async (req, res) => {
   const { email, name, password } = req.body;
@@ -30,4 +29,4 @@ router.get("/", async (_req, res) => {
   res.send(users);
 });
 
-export default router;
+module.exports = router;

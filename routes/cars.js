@@ -1,10 +1,9 @@
-import express from "express";
-
-import { Car, validateCar } from "../models/car.js";
-import auth from "../middlewares/auth.js";
-import validator from "../middlewares/validate.js";
-
+const express = require("express");
 const router = express.Router();
+
+const { Car, validateCar } = require("../models/car");
+const auth = require("../middlewares/auth");
+const validator = require("../middlewares/validate");
 
 router.post("/", [auth, validator(validateCar)], async (req, res) => {
   const { fuel, mileage, model, plate, selfDrive, type, year, images } =
@@ -33,4 +32,4 @@ router.get("/", async (_req, res) => {
   res.send(cars);
 });
 
-export default router;
+module.exports = router;

@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
-import Joi from "joi";
+const Joi = require("joi");
+const mongoose = require("mongoose");
 
 const schema = new mongoose.Schema({
   email: {
@@ -35,11 +35,14 @@ schema.methods.generateAuthToken = function () {
   );
 };
 
-export const User = mongoose.model("User", schema);
+const User = mongoose.model("User", schema);
 
-export const validateUser = (user) =>
+const validateUser = (user) =>
   Joi.object({
     email: Joi.string().min(3).max(100).required(),
     name: Joi.string().min(3).max(50).required(),
     password: Joi.string().min(6).max(1024).required(),
   }).validate(user);
+
+exports.User = User;
+exports.validateUser = validateUser;

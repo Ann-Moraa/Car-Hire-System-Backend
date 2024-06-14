@@ -1,8 +1,8 @@
-import winston from "winston";
-import "winston-mongodb";
-import "express-async-errors";
+const winston = require("winston");
+require("winston-mongodb");
+require("express-async-errors");
 
-export default function () {
+module.exports = function () {
   winston.add(
     new winston.transports.Console({
       format: winston.format.simple(),
@@ -26,4 +26,4 @@ export default function () {
   winston.configure({
     transports: [new winston.transports.File({ filename: "logfile.log" })],
   });
-}
+};
