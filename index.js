@@ -4,14 +4,15 @@ const app = express();
 
 const logging = require("./startup/logging");
 const routes = require("./startup/routes");
-// require("./startup/db")();
-// require("./startup/config")();
-// require("./startup/prod")(app);
+const db = require("./startup/db");
+const config = require("./startup/config");
+const prod = require("./startup/prod");
 
-console.log("Init startup...");
 logging();
 routes(app);
-console.log("Done initializing startup...");
+db();
+config();
+prod(app);
 
 const port = process.env.PORT || 3000;
 const server = app.listen(port, () =>
