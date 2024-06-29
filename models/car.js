@@ -21,6 +21,10 @@ const schema = new mongoose.Schema({
     trim: true,
     required: true,
   },
+  cc: {
+    type: Number,
+    required: true
+  },
   lessee: {
     required: true,
     type: mongoose.Types.ObjectId,
@@ -49,6 +53,7 @@ const Car = mongoose.model("Car", schema);
 
 const validateCar = (car) =>
   Joi.object({
+    cc: Joi.number().required(),
     selfDrive: Joi.boolean().required(),
     fuel: Joi.string().required(),
     mileage: Joi.string().required(),
