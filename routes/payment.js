@@ -58,7 +58,7 @@ router.post("/mpesa-stk-push", async (req, res) => {
             }
         );
 
-        const stkPushData = await stkPushResponse.json();
+        stkPushData = await stkPushResponse.json();
         if (stkPushData.ResponseCode === '0') { // Assuming '0' indicates success
             res.status(200).json({
                 status: 'success',
