@@ -3,10 +3,10 @@ const bcrypt = require("bcrypt");
 const router = express.Router();
 const _ = require("lodash");
 
-const { User, validateUser } = require("../models/user.js");
+const { User, validateUser } = require("../models/user");
 const validator = require("../middlewares/validate");
 
-router.post("/", validator(validateUser), async (req, res) => {
+router.post("/", validator(validateUser), async (req, res) => {ss
   const { email, name, password } = req.body;
   let user = await service.findOne({ email });
 
