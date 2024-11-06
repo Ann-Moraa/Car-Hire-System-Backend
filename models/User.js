@@ -35,7 +35,7 @@ schema.methods.generateAuthToken = function () {
   );
 };
 
-const User = mongoose.model("User", schema);
+const User = mongoose.model("user", schema);
 
 const validateUser = (user) =>
   Joi.object({
