@@ -1,24 +1,21 @@
 const express = require("express");
 const router = express.Router();
-const fetch = require('node-fetch');
 const fs = require('fs');
 const axios = require("axios");
 const moment = require("moment");
 
-
-const MPESA_BASE_URL = 'https://api.safaricom.co.ke';
 const businessShortCode = '5343650';
 const passkey = 'a847b4de631c15a873c9763c53c43c090a57115582b8e48eb3720cddd8439d84';
 const consumerKey = "4IhJFHXCg7XHHDqGDJvyHsDS7AEsIDHgZO5uA81HGlILwh4u"
 const consumerSecret = "pJYMh26ZCHO0lBHogG2sBvtcmNrYIbZygZV5GH6MVdHMGZrPA8PftIvSVSniBMSZ"
 
 // Sample API route
-router.get('/api/home', (req, res) => {
+router.get('/home', (req, res) => {
     res.json({ message: 'This is a sample API route.' });
     console.log("This is a sample API route.");
   });
 
-  router.get("/api/access_token", (req, res) => {
+  router.get("/access_token", (req, res) => {
     getAccessToken()
       .then((accessToken) => {
         res.json({ message: "😀 Your access token is " + accessToken });
@@ -79,7 +76,7 @@ router.get('/api/home', (req, res) => {
               PartyA: phoneNumber,
               PartyB: businessShortCode,
               PhoneNumber: phoneNumber,
-              CallBackURL: `https://main--ake-riders.netlify.app/`,
+              CallBackURL: `https://car-hire-system-backend.onrender.com/api/payment/callback`,
               AccountReference: 'Car Hire Payment',
               TransactionDesc: 'Payment for car hire',
             },
@@ -113,7 +110,7 @@ router.get('/api/home', (req, res) => {
   
   
   
-  router.post("/api/callback", (req, res) => {
+  router.post("/callback", (req, res) => {
     console.log("STK PUSH CALLBACK");
     const merchantRequestID = req.body.Body.stkCallback.MerchantRequestID;
     const checkoutRequestID = req.body.Body.stkCallback.CheckoutRequestID;
@@ -143,54 +140,5 @@ router.get('/api/home', (req, res) => {
       console.log("STK PUSH CALLBACK STORED SUCCESSFULLY");
     });
   });
-
-router.post("/check-transaction-status", async (req, res) => {
-    const { checkoutRequestId } = req.body; // Get checkoutRequestId from request
-
-    // 1. Generate M-Pesa Access Token
-    const auth = Buffer.from(`${consumerKey}:${consumerSecret}`).toString('base64');
-    const tokenResponse = await fetch(
-        `${MPESA_BASE_URL}/oauth/v1/generate?grant_type=client_credentials`,
-        {
-            method: 'GET',
-            headers: {
-                Authorization: `Basic ${auth}`,
-            },
-        }
-    );
-    const tokenData = await tokenResponse.json();
-    const accessToken = tokenData.access_token;
-
-    // 2. Prepare Transaction Status Request Data
-    const timestamp = moment().format('YYYYMMDDHHmmss');
-    const password = Buffer.from(`${businessShortCode}${passkey}${timestamp}`).toString('base64');
-    const transactionStatusData = {
-        BusinessShortCode: businessShortCode,
-        Password: password,
-        Timestamp: timestamp,
-        CheckoutRequestID: checkoutRequestId,
-    };
-
-    // 3. Make Transaction Status Request
-    try {
-        const transactionStatusResponse = await fetch(
-            `${MPESA_BASE_URL}/mpesa/stkpushquery/v1/query`,
-            {
-                method: 'POST',
-                headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(transactionStatusData),
-            }
-        );
-
-        const transactionStatusData = await transactionStatusResponse.json();
-        res.json(transactionStatusData); // Return transaction status to client
-    } catch (error) {
-        console.error('Error checking transaction status:', error);
-        res.status(500).json({ error: 'Failed to check transaction status' });
-    }
-});
 
 module.exports = router;
