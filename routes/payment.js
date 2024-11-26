@@ -21,7 +21,7 @@ router.get('/home', (req, res) => {
         res.json({ message: "😀 Your access token is " + accessToken });
       })
       .catch(console.log);
-  });
+  }); 
 
   async function getAccessToken() {
     const url =
