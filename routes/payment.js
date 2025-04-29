@@ -44,16 +44,25 @@ router.get('/home', (req, res) => {
     }
   }
 
-  router.post('/stkpush', (req, res) => {
-    let phoneNumber = req.body.phone;
-    const amount = req.body.amount;
-  
-    if (phoneNumber.startsWith("0")) {
-      phoneNumber = "254" + phoneNumber.slice(1);
-    }
-  
-    getAccessToken()
-      .then((accessToken) => {
+  router.post('/stkpush', async (req, res) => { // Made the route handler async
+    try {
+        let phoneNumber = req.body.phone;
+        const amount = req.body.amount;
+
+        if (!phoneNumber || !amount) {
+            return res.status(400).json({
+                msg: "Missing phone number or amount in request body.",
+                status: false
+            });
+        }
+
+        if (phoneNumber.startsWith("0")) {
+          phoneNumber = "254" + phoneNumber.slice(1);
+        }
+
+        // Use await with getAccessToken since it's an async function
+        const accessToken = await getAccessToken();
+
         const url =
           "https://api.safaricom.co.ke/mpesa/stkpush/v1/processrequest";
         const auth = "Bearer " + accessToken;
@@ -63,60 +72,56 @@ router.get('/home', (req, res) => {
           passkey +
           timestamp
         ).toString("base64");
-  
-        axios
-          .post(
-            url,
-            {
-              BusinessShortCode: businessShortCode,
-              Password: password,
-              Timestamp: timestamp,
-              TransactionType: "CustomerBuyGoodsOnline",
-              Amount: amount,
-              PartyA: phoneNumber,
-              PartyB: businessShortCode,
-              PhoneNumber: phoneNumber,
-              CallBackURL: `https://car-hire-system-backend.onrender.com/api/payment/callback`,
-              AccountReference: 'Car Hire Payment',
-              TransactionDesc: 'Payment for car hire',
-            },
-            {
-              headers: {
-                Authorization: auth,
-              },
-            }
-          )
-          .then((response) => {
-            //SEND BACK A JSON RESPONSE TO THE CLIENT
-            console.log(response.data);
+
+        try {
+            const response = await axios.post( // Use await with axios.post
+                url,
+                {
+                  BusinessShortCode: businessShortCode,
+                  Password: password,
+                  Timestamp: timestamp,
+                  TransactionType: "CustomerBuyGoodsOnline", // Double-check this if using Paybill
+                  Amount: amount,
+                  PartyA: phoneNumber,
+                  PartyB: businessShortCode,
+                  PhoneNumber: phoneNumber,
+                  CallBackURL: `https://car-hire-system-backend.onrender.com/api/payment/callback`,
+                  AccountReference: 'Car Hire Payment',
+                  TransactionDesc: 'Payment for car hire',
+                },
+                {
+                  headers: {
+                    Authorization: auth,
+                  },
+                }
+            );
+
+            // SEND BACK A JSON RESPONSE TO THE CLIENT (if Safaricom accepts the request)
+            console.log("STK Push request sent to Safaricom:", response.data);
             res.status(200).json({
-              msg: "Request is successful done ✔✔. Please enter mpesa pin to complete the transaction",
+              msg: "STK Push request successful. Please check your phone to complete the transaction.",
               status: true,
+              safaricomResponse: response.data // Optionally include Safaricom's response data
             });
-  
-          })
-          .catch((error) => {
-            console.log(error);
-            //res.status(500).send("❌ Request failed");
-            console.log(error);
+
+        } catch (axiosError) { // Catch errors specifically from the axios call to Safaricom
+            console.error("Error sending STK Push request to Safaricom:", axiosError.response ? axiosError.response.data : axiosError.message);
             res.status(500).json({
-              msg: "Request failed",
+              msg: "Failed to initiate STK Push with Safaricom.",
               status: false,
+              error: axiosError.response ? axiosError.response.data : axiosError.message // Include Safaricom's error details
             });
-          });
-      })
-      .catch((error) => {
-        // SEND BACK AN ERROR RESPONSE TO THE CLIENT (if getting access token fails)
-        console.error("Error getting Safaricom access token:", error);
+        }
+
+    } catch (generalError) { // Catch any other errors in the route handler
+        console.error("An unexpected error occurred in /stkpush:", generalError);
         res.status(500).json({
-            msg: "Failed to get M-Pesa access token.",
+            msg: "An internal server error occurred.",
             status: false,
-            error: error.message // Include the access token error message
+            error: generalError.message // Include the general error message
         });
-    });
-  });
-  
-  
+    }
+});
   
   router.post("/callback", (req, res) => {
     console.log("STK PUSH CALLBACK");
