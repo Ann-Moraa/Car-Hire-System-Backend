@@ -80,7 +80,7 @@ router.get('/home', (req, res) => {
                   BusinessShortCode: businessShortCode,
                   Password: password,
                   Timestamp: timestamp,
-                  TransactionType: "CustomerBuyGoodsOnline", // Double-check this if using Paybill
+                  TransactionType: "CustomerPayBillOnline", //"CustomerBuyGoodsOnline", // Double-check this if using Paybill
                   Amount: amount,
                   PartyA: phoneNumber,
                   PartyB: businessShortCode,
