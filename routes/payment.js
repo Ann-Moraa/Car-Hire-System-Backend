@@ -105,7 +105,15 @@ router.get('/home', (req, res) => {
             });
           });
       })
-      .catch(console.log);
+      .catch((error) => {
+        // SEND BACK AN ERROR RESPONSE TO THE CLIENT (if getting access token fails)
+        console.error("Error getting Safaricom access token:", error);
+        res.status(500).json({
+            msg: "Failed to get M-Pesa access token.",
+            status: false,
+            error: error.message // Include the access token error message
+        });
+    });
   });
   
   
