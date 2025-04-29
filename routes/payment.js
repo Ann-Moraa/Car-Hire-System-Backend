@@ -138,6 +138,9 @@ router.get('/home', (req, res) => {
         return console.log(err);
       }
       console.log("STK PUSH CALLBACK STORED SUCCESSFULLY");
+      
+      // Send a 200 OK response back to Safaricom
+      res.status(200).json({ message: "Callback received successfully" });
     });
   });
 
