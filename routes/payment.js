@@ -104,7 +104,6 @@ router.get('/home', (req, res) => {
                   headers: {
                     Authorization: auth,
                   },
-                  timeout: 10000 // Keep the timeout
                 }
             );
             console.log("11. Received response from Safaricom.");
