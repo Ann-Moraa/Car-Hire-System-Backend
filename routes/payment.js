@@ -3,6 +3,7 @@ const router = express.Router();
 const fs = require('fs');
 const axios = require("axios");
 const moment = require("moment");
+console.log("Payment routes file loaded."); 
 
 const businessShortCode = '5343650';
 const passkey = 'a847b4de631c15a873c9763c53c43c090a57115582b8e48eb3720cddd8439d84';
@@ -45,6 +46,7 @@ router.get('/home', (req, res) => {
   }
 
   router.post('/stkpush', async (req, res) => { // Made the route handler async
+    console.log("STK Push route hit."); 
     try {
         let phoneNumber = req.body.phone;
         const amount = req.body.amount;

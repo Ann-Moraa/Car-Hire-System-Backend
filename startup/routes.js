@@ -9,6 +9,7 @@ const error = require("../middlewares/error");
 const users = require("../routes/users.js");
 
 module.exports = function (app) {
+  console.log("Routes startup function called."); 
   app.use(express.json());
   app.use(serveStatic("public", { acceptRanges: false }));
   app.use(cors({ origin: "*" }));
